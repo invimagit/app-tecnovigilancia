@@ -1,0 +1,170 @@
+object frmConsultaUsuario: TfrmConsultaUsuario
+  Left = 0
+  Top = 0
+  Caption = 'Sistema de Informaci'#243'n y Gesti'#243'n de Tecnovigilancia - INVIMA'
+  ClientHeight = 813
+  ClientWidth = 1188
+  WindowState = wsMaximized
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object top: TRectangle
+    Align = Top
+    Fill.Kind = None
+    Size.Width = 1188.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+  object main: TRectangle
+    Align = Client
+    Fill.Kind = None
+    Size.Width = 1088.000000000000000000
+    Size.Height = 713.000000000000000000
+    Size.PlatformDefault = False
+    object lblTitulo: TLabel
+      Align = Top
+      AutoSize = True
+      StyledSettings = [Family, Style, FontColor]
+      Size.Width = 1088.000000000000000000
+      Size.Height = 27.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'labelstyle'
+      TextSettings.Font.Size = 20.000000000000000000
+      TextSettings.HorzAlign = Center
+      Text = 'Inicializaci'#243'n de usuario en Aplicativo Portable'
+    end
+    object lblNumeroCedula: TLabel
+      AutoSize = True
+      StyledSettings = [Family, Size, FontColor]
+      Position.X = 56.000000000000000000
+      Position.Y = 72.000000000000000000
+      Size.Width = 441.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'listboxheaderlabel'
+      Text = 'D'#237'gite su n'#250'mero de c'#233'dula (sin puntos ni comas)'
+    end
+    object txtNumeroCedula: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      StyleLookup = 'editstyle'
+      TabOrder = 2
+      Position.X = 512.000000000000000000
+      Position.Y = 72.000000000000000000
+      Size.Width = 225.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object right: TRectangle
+    Align = Right
+    Fill.Kind = None
+    Position.X = 1138.000000000000000000
+    Position.Y = 50.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 713.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+  object left: TRectangle
+    Align = Left
+    Fill.Kind = None
+    Position.Y = 50.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 713.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+  object bottom: TRectangle
+    Align = Bottom
+    Fill.Kind = None
+    Position.Y = 763.000000000000000000
+    Size.Width = 1188.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+  object btnSincronizarXCedula: TButton
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 832.000000000000000000
+    Position.Y = 120.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'cornerbuttonstyle'
+    TabOrder = 5
+    Text = 'Sincronizar'
+    TextSettings.Font.Size = 15.000000000000000000
+  end
+  object btnCancelar: TButton
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 728.000000000000000000
+    Position.Y = 704.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'cornerbuttonstyle'
+    TabOrder = 7
+    Text = 'Cancelar'
+    TextSettings.Font.Size = 15.000000000000000000
+  end
+  object btnIniciar: TButton
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 920.000000000000000000
+    Position.Y = 704.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'cornerbuttonstyle'
+    TabOrder = 8
+    Text = 'Iniciar'
+    TextSettings.Font.Size = 15.000000000000000000
+  end
+  object Edit1: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 9
+    Position.X = 256.000000000000000000
+    Position.Y = 256.000000000000000000
+    Size.Width = 265.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Edit2: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 10
+    Position.X = 136.000000000000000000
+    Position.Y = 352.000000000000000000
+    Size.Width = 761.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Edit3: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 11
+    Text = 
+      '1593401870051751291211371023121171332582962012434074110871070720' +
+      '57096089100166174309501158'
+    Position.X = 136.000000000000000000
+    Position.Y = 376.000000000000000000
+    Size.Width = 753.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Button1: TButton
+    Position.X = 424.000000000000000000
+    Position.Y = 480.000000000000000000
+    TabOrder = 12
+    Text = 'Button1'
+    OnClick = Button1Click
+  end
+  object Edit4: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 13
+    Position.X = 136.000000000000000000
+    Position.Y = 408.000000000000000000
+    Size.Width = 265.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

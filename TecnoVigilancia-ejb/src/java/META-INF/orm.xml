@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings version="2.1" 
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- JPA Named Native Queries -->
+    <!-- Reporte de Registros cargados -->
+    <named-native-query name="reporteRegistrosCargados">
+        <query>
+            SELECT  
+                tecno_reporte_eventos.reporte  as reporte  ,
+                tecno_reporte_eventos.fechevento  as fechevento  ,
+                tecno_reporte_eventos.descripcion_evento as descripcion_evento ,
+                (CASE tecno_reporte_eventos.cdg_eventodeteccion WHEN 1 THEN 'Antes del Uso del DM' WHEN 2 THEN 'Durante el Uso del DM' ELSE 'Después del Uso del DM' END) AS cdg_eventodeteccion ,
+                (CASE tecno_reporte_eventos.cdg_tiporeporte WHEN 1 THEN 'Inmediato' ELSE 'Trimestral' END) as cdg_tiporeporte ,
+                tecno_reporte_eventos.fechreporte_evento as fechreporte_evento ,
+                (CASE tecno_reporte_eventos.cdg_origenreporte WHEN 1 THEN 'Vigilancia Pasiva' WHEN 2 THEN 'Vigilancia Proactiva' ELSE 'Vigilancia Activa' END) as cdg_origenreporte ,
+                (CASE tecno_reporte_eventos.cdg_tipoeventoincidente WHEN 1 THEN 'Evento adverso serio' WHEN 2 THEN 'Evento adverso no serio' WHEN 3 THEN 'Incidente adverso serio' ELSE 'Incidente adverso no serio' END) AS cdg_tipoeventoincidente ,
+                tecno_reporte_eventos.internet as internet ,
+                tecno_reporte_eventos.fechaingreso as fechaingreso ,
+                tecno_reporte_eventos.reportado as reportado,
+                tecno_reporte_eventos.desenlace_otro as desenlace_otro ,
+                tecno_desenlace.descripcion as descripcion ,
+                tecno_dispositivo.expediente as expediente ,
+                tecno_dispositivo.nroregsan as nroregsan ,
+                tecno_dispositivo.nombre_dispositivo as nombre_dispositivo ,
+                tecno_dispositivo.nombre_comercial as nombre_comercial ,
+                tecno_dispositivo.lote as lote ,
+                tecno_dispositivo.referencia as referencia ,
+                tecno_dispositivo.modelo as modelo ,
+                tecno_dispositivo.serial as serial ,
+                tecno_dispositivo.cdg_unicodispositivo as cdg_unicodispositivo ,
+                tecno_dispositivo.fabricante_usuario as fabricante_usuario ,
+                tecno_dispositivo.distribuidor_usuario as distribuidor_usuario ,
+                tecno_dispositivo.utilizado as utilizado ,
+                tecno_dispositivo.area_funciona as area_funciona ,
+                tecno_tipodispositivo.descripcion as descripcion2,
+                tecno_paciente.tipidentificacion as tipidentificacion ,
+                tecno_paciente.identificacion as identificacion ,
+                tecno_paciente.edad as edad ,
+                tecno_paciente.edad_en as edad_en ,
+                tecno_paciente.genero as genero ,
+                tecno_paciente.diagnostico_paciente as diagnostico_paciente,
+                tecno_paciente.institucion_reportente as institucion_reportente ,
+                tecno_paciente.naturaleza as naturaleza ,
+                tecno_paciente.direccion_reportante as direccion_reportante ,
+                municipios_a.descripcion as descripcion3,
+                departamentos_a.descripcion as descripcion4,
+                tecno_paciente.telefono_reportante as telefono_reportante ,
+                tecno_paciente.email_reportante as email_reportante ,
+                tecno_paciente.contacto_reportante as contacto_reportante ,
+                tecno_paciente.institucion_incidente as institucion_incidente ,
+                tecno_paciente.identificacion1       as identificacion1       ,
+                departamentos_b.descripcion as descripcion5 ,
+                municipios_b.descripcion as descripcion6,
+                tecno_paciente.nivel_complejidad as nivel_complejidad ,
+                tecno_cargos.descripcion as descripcion7 ,
+                tecno_paciente.fecha_notif as fecha_notif ,
+                tecno_paciente.autorizacion as autorizacion ,
+                (select dbo.tecno_tiporeportante.nombre_tiporeportante from dbo.tecno_tiporeportante where dbo.tecno_tiporeportante.cdg_tiporeportante = tecno_paciente.tipo_reportante) as tipo_reportante ,
+                tecno_causa_probable.termino_ea as termino_ea ,
+                tecno_evaluacion_caso.acciones as acciones ,
+                tecno_evaluacion_caso.exp_alertas as exp_alertas ,
+                tecno_evaluacion_caso.descripcion_alerta as descripcion_alerta ,
+                (CASE tecno_evaluacion_caso.estado_caso WHEN 'A' THEN 'ABIERTO' WHEN 'C' THEN 'CERRADO' ELSE 'SEGUIMIENTO' END) as estado_caso ,
+                tecno_reporte_alertas.numero as numero ,
+                tecno_reporte_alertas.risarh as risarh ,
+                tecno_reporte_alertas.descripcion_alerta as descripcion_alerta2,
+                tecno_reporte_alertas.expediente_dm as expediente_dm ,
+                tecno_tipoalertas.descripcion as descripcion8 ,
+                tecno_evaluacion_caso.seguimiento as seguimiento ,
+                (CASE tecno_evaluacion_caso.medida_ejecutada WHEN 1 THEN 'Oficio de requerimiento' WHEN 2 THEN 'Visita IVC al Prestador de Servicio de Salud' WHEN 3 THEN 'Visita IVC al fabricante/importador' WHEN 4 THEN 'Visita IVC al distribuidor/comercializador' WHEN 5 THEN 'Actividades de IVC de la SDS con el INVIMA' WHEN 6 THEN 'Asistencia Técnica al fabricante/importador' WHEN 7 THEN 'Asistencia Técnica al Prestador de Servicio de Salud' WHEN 8 THEN 'Otro' ELSE 'Ninguna acción' END) as medida_ejecutada ,
+                tecno_evaluacion_caso.notificacion as notificacion ,
+                tecno_evaluacion_caso.fecha_notificacion as fecha_notificacion ,
+                tecno_evaluacion_caso.fecha_importador as fecha_importador ,
+                tecno_evaluacion_caso.dispositivo_evaluacion as dispositivo_evaluacion ,
+                tecno_evaluacion_caso.enviado_importador as enviado_importador,
+                tecno_evaluacion_caso.cdgfuncionario as nmbfuncionario,
+        	tecno_paciente.identificacion1 as identificacion_empresa,
+	(select dbo.tecno_roles.nombre_rol from dbo.tecno_roles where dbo.tecno_roles.IDROL = tecno_reporte_eventos.idrol) as IDROL,
+                tecno_reporte_eventos.reportepre as PRECOL,
+                tecno_reporte_eventos.estado_reporte as ESTADO
+            FROM tecno_reporte_eventos LEFT OUTER JOIN tecno_desenlace ON   
+            tecno_reporte_eventos.cdg_desenlace = tecno_desenlace.cdg_desenlace   
+            LEFT OUTER JOIN tecno_dispositivo ON tecno_reporte_eventos.reporte = tecno_dispositivo.reporte   
+            LEFT OUTER JOIN tecno_tipodispositivo ON tecno_dispositivo.cdg_tipodispositivo = tecno_tipodispositivo.cdg_tipodispositivo   
+            LEFT OUTER JOIN tecno_paciente ON tecno_reporte_eventos.reporte = tecno_paciente.reporte   
+            LEFT OUTER JOIN departamentos departamentos_a ON tecno_paciente.cod_depart = departamentos_a.cod_depart   
+            LEFT OUTER JOIN municipios municipios_a ON tecno_paciente.cod_mun = municipios_a.cod_mun   
+            LEFT OUTER JOIN municipios municipios_b ON tecno_paciente.cod_mun1 = municipios_b.cod_mun   
+            LEFT OUTER JOIN departamentos departamentos_b ON tecno_paciente.cod_depart1 = departamentos_b.cod_depart   
+            LEFT OUTER JOIN tecno_cargos ON tecno_paciente.cargo_inst = tecno_cargos.cdg_cargos   
+            LEFT OUTER JOIN tecno_evaluacion_caso ON tecno_reporte_eventos.reporte = tecno_evaluacion_caso.reporte   
+            LEFT OUTER JOIN tecno_causa_probable ON tecno_evaluacion_caso.cdg_causa = tecno_causa_probable.cdg_causa   
+            LEFT OUTER JOIN tecno_reporte_alertas ON tecno_reporte_eventos.reporte = tecno_reporte_alertas.reporte   
+            LEFT OUTER JOIN tecno_tipoalertas ON tecno_reporte_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas   
+            LEFT OUTER JOIN funcionarios ON tecno_evaluacion_caso.cdgfuncionario = funcionarios.cdgfuncionario       
+            WHERE 
+            (tecno_reporte_eventos.fechaingreso &gt;= ?1 AND tecno_reporte_eventos.fechaingreso &lt;= ?2) 
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="reporteRegistrosCargadosIPS">
+        <query>
+            SELECT  
+                tecno_reporte_eventos.reporte  as reporte  ,
+                tecno_reporte_eventos.fechevento  as fechevento  ,
+                tecno_reporte_eventos.descripcion_evento as descripcion_evento ,
+                (CASE tecno_reporte_eventos.cdg_eventodeteccion WHEN 1 THEN 'Antes del Uso del DM' WHEN 2 THEN 'Durante el Uso del DM' ELSE 'Después del Uso del DM' END) AS cdg_eventodeteccion ,
+                (CASE tecno_reporte_eventos.cdg_tiporeporte WHEN 1 THEN 'Inmediato' ELSE 'Trimestral' END) as cdg_tiporeporte ,
+                tecno_reporte_eventos.fechreporte_evento as fechreporte_evento ,
+                (CASE tecno_reporte_eventos.cdg_origenreporte WHEN 1 THEN 'Vigilancia Pasiva' WHEN 2 THEN 'Vigilancia Proactiva' ELSE 'Vigilancia Activa' END) as cdg_origenreporte ,
+                (CASE tecno_reporte_eventos.cdg_tipoeventoincidente WHEN 1 THEN 'Evento adverso serio' WHEN 2 THEN 'Evento adverso no serio' WHEN 3 THEN 'Incidente adverso serio' ELSE 'Incidente adverso no serio' END) AS cdg_tipoeventoincidente ,
+                tecno_reporte_eventos.internet as internet ,
+                tecno_reporte_eventos.fechaingreso as fechaingreso ,
+                tecno_reporte_eventos.reportado as reportado,
+                tecno_reporte_eventos.desenlace_otro as desenlace_otro ,
+                tecno_desenlace.descripcion as descripcion ,
+                tecno_dispositivo.expediente as expediente ,
+                tecno_dispositivo.nroregsan as nroregsan ,
+                tecno_dispositivo.nombre_dispositivo as nombre_dispositivo ,
+                tecno_dispositivo.nombre_comercial as nombre_comercial ,
+                tecno_dispositivo.lote as lote ,
+                tecno_dispositivo.referencia as referencia ,
+                tecno_dispositivo.modelo as modelo ,
+                tecno_dispositivo.serial as serial ,
+                tecno_dispositivo.cdg_unicodispositivo as cdg_unicodispositivo ,
+                tecno_dispositivo.fabricante_usuario as fabricante_usuario ,
+                tecno_dispositivo.distribuidor_usuario as distribuidor_usuario ,
+                tecno_dispositivo.utilizado as utilizado ,
+                tecno_dispositivo.area_funciona as area_funciona ,
+                tecno_tipodispositivo.descripcion as descripcion2,
+                tecno_paciente.tipidentificacion as tipidentificacion ,
+                tecno_paciente.identificacion as identificacion ,
+                tecno_paciente.edad as edad ,
+                tecno_paciente.edad_en as edad_en ,
+                tecno_paciente.genero as genero ,
+                tecno_paciente.diagnostico_paciente as diagnostico_paciente,
+                tecno_paciente.institucion_reportente as institucion_reportente ,
+                tecno_paciente.naturaleza as naturaleza ,
+                tecno_paciente.direccion_reportante as direccion_reportante ,
+                municipios_a.descripcion as descripcion3,
+                departamentos_a.descripcion as descripcion4,
+                tecno_paciente.telefono_reportante as telefono_reportante ,
+                tecno_paciente.email_reportante as email_reportante ,
+                tecno_paciente.contacto_reportante as contacto_reportante ,
+                tecno_paciente.institucion_incidente as institucion_incidente ,
+                tecno_paciente.identificacion1       as identificacion1       ,
+                departamentos_b.descripcion as descripcion5 ,
+                municipios_b.descripcion as descripcion6,
+                tecno_paciente.nivel_complejidad as nivel_complejidad ,
+                tecno_cargos.descripcion as descripcion7 ,
+                tecno_paciente.fecha_notif as fecha_notif ,
+                tecno_paciente.autorizacion as autorizacion ,
+                (select dbo.tecno_tiporeportante.nombre_tiporeportante from dbo.tecno_tiporeportante where dbo.tecno_tiporeportante.cdg_tiporeportante = tecno_paciente.tipo_reportante) as tipo_reportante ,
+                tecno_causa_probable.termino_ea as termino_ea ,
+                tecno_evaluacion_caso.acciones as acciones ,
+                tecno_evaluacion_caso.exp_alertas as exp_alertas ,
+                tecno_evaluacion_caso.descripcion_alerta as descripcion_alerta ,
+                (CASE tecno_evaluacion_caso.estado_caso WHEN 'A' THEN 'ABIERTO' WHEN 'C' THEN 'CERRADO' ELSE 'SEGUIMIENTO' END) as estado_caso ,
+                tecno_reporte_alertas.numero as numero ,
+                tecno_reporte_alertas.risarh as risarh ,
+                tecno_reporte_alertas.descripcion_alerta as descripcion_alerta2,
+                tecno_reporte_alertas.expediente_dm as expediente_dm ,
+                tecno_tipoalertas.descripcion as descripcion8 ,
+                tecno_evaluacion_caso.seguimiento as seguimiento ,
+                (CASE tecno_evaluacion_caso.medida_ejecutada WHEN 1 THEN 'Oficio de requerimiento' WHEN 2 THEN 'Visita IVC al Prestador de Servicio de Salud' WHEN 3 THEN 'Visita IVC al fabricante/importador' WHEN 4 THEN 'Visita IVC al distribuidor/comercializador' WHEN 5 THEN 'Actividades de IVC de la SDS con el INVIMA' WHEN 6 THEN 'Asistencia Técnica al fabricante/importador' WHEN 7 THEN 'Asistencia Técnica al Prestador de Servicio de Salud' WHEN 8 THEN 'Otro' ELSE 'Ninguna acción' END) as medida_ejecutada ,
+                tecno_evaluacion_caso.notificacion as notificacion ,
+                tecno_evaluacion_caso.fecha_notificacion as fecha_notificacion ,
+                tecno_evaluacion_caso.fecha_importador as fecha_importador ,
+                tecno_evaluacion_caso.dispositivo_evaluacion as dispositivo_evaluacion ,
+                tecno_evaluacion_caso.enviado_importador as enviado_importador ,
+                tecno_evaluacion_caso.cdgfuncionario as nmbfuncionario,
+        	tecno_paciente.identificacion1 as identificacion_empresa,
+	(select dbo.tecno_roles.nombre_rol from dbo.tecno_roles where dbo.tecno_roles.IDROL = tecno_reporte_eventos.idrol) as IDROL,
+                tecno_reporte_eventos.reportepre as PRECOL
+            FROM tecno_reporte_eventos LEFT OUTER JOIN tecno_desenlace ON   
+            tecno_reporte_eventos.cdg_desenlace = tecno_desenlace.cdg_desenlace   
+            LEFT OUTER JOIN tecno_dispositivo ON tecno_reporte_eventos.reporte = tecno_dispositivo.reporte   
+            LEFT OUTER JOIN tecno_tipodispositivo ON tecno_dispositivo.cdg_tipodispositivo = tecno_tipodispositivo.cdg_tipodispositivo   
+            LEFT OUTER JOIN tecno_paciente ON tecno_reporte_eventos.reporte = tecno_paciente.reporte   
+            LEFT OUTER JOIN departamentos departamentos_a ON tecno_paciente.cod_depart = departamentos_a.cod_depart   
+            LEFT OUTER JOIN municipios municipios_a ON tecno_paciente.cod_mun = municipios_a.cod_mun   
+            LEFT OUTER JOIN municipios municipios_b ON tecno_paciente.cod_mun1 = municipios_b.cod_mun   
+            LEFT OUTER JOIN departamentos departamentos_b ON tecno_paciente.cod_depart1 = departamentos_b.cod_depart   
+            LEFT OUTER JOIN tecno_cargos ON tecno_paciente.cargo_inst = tecno_cargos.cdg_cargos   
+            LEFT OUTER JOIN tecno_evaluacion_caso ON tecno_reporte_eventos.reporte = tecno_evaluacion_caso.reporte   
+            LEFT OUTER JOIN tecno_causa_probable ON tecno_evaluacion_caso.cdg_causa = tecno_causa_probable.cdg_causa   
+            LEFT OUTER JOIN tecno_reporte_alertas ON tecno_reporte_eventos.reporte = tecno_reporte_alertas.reporte   
+            LEFT OUTER JOIN tecno_tipoalertas ON tecno_reporte_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas   
+            LEFT OUTER JOIN funcionarios ON tecno_evaluacion_caso.cdgfuncionario = funcionarios.cdgfuncionario       
+            WHERE 
+            (tecno_reporte_eventos.fechaingreso &gt;= ?1 AND tecno_reporte_eventos.fechaingreso &lt;= ?2)            
+            and (tecno_reporte_eventos.idips = ?3)
+            and tecno_paciente.cod_depart = ?4
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="reporteRegistrosCargadosIPSSOLOPRESTADORES">
+        <query>
+            SELECT  
+                tecno_reporte_eventos.reporte  as reporte  ,
+                tecno_reporte_eventos.fechevento  as fechevento  ,
+                tecno_reporte_eventos.descripcion_evento as descripcion_evento ,
+                (CASE tecno_reporte_eventos.cdg_eventodeteccion WHEN 1 THEN 'Antes del Uso del DM' WHEN 2 THEN 'Durante el Uso del DM' ELSE 'Después del Uso del DM' END) AS cdg_eventodeteccion ,
+                (CASE tecno_reporte_eventos.cdg_tiporeporte WHEN 1 THEN 'Inmediato' ELSE 'Trimestral' END) as cdg_tiporeporte ,
+                tecno_reporte_eventos.fechreporte_evento as fechreporte_evento ,
+                (CASE tecno_reporte_eventos.cdg_origenreporte WHEN 1 THEN 'Vigilancia Pasiva' WHEN 2 THEN 'Vigilancia Proactiva' ELSE 'Vigilancia Activa' END) as cdg_origenreporte ,
+                (CASE tecno_reporte_eventos.cdg_tipoeventoincidente WHEN 1 THEN 'Evento adverso serio' WHEN 2 THEN 'Evento adverso no serio' WHEN 3 THEN 'Incidente adverso serio' ELSE 'Incidente adverso no serio' END) AS cdg_tipoeventoincidente ,
+                tecno_reporte_eventos.internet as internet ,
+                tecno_reporte_eventos.fechaingreso as fechaingreso ,
+                tecno_reporte_eventos.reportado as reportado,
+                tecno_reporte_eventos.desenlace_otro as desenlace_otro ,
+                tecno_desenlace.descripcion as descripcion ,
+                tecno_dispositivo.expediente as expediente ,
+                tecno_dispositivo.nroregsan as nroregsan ,
+                tecno_dispositivo.nombre_dispositivo as nombre_dispositivo ,
+                tecno_dispositivo.nombre_comercial as nombre_comercial ,
+                tecno_dispositivo.lote as lote ,
+                tecno_dispositivo.referencia as referencia ,
+                tecno_dispositivo.modelo as modelo ,
+                tecno_dispositivo.serial as serial ,
+                tecno_dispositivo.cdg_unicodispositivo as cdg_unicodispositivo ,
+                tecno_dispositivo.fabricante_usuario as fabricante_usuario ,
+                tecno_dispositivo.distribuidor_usuario as distribuidor_usuario ,
+                tecno_dispositivo.utilizado as utilizado ,
+                tecno_dispositivo.area_funciona as area_funciona ,
+                tecno_tipodispositivo.descripcion as descripcion2,
+                tecno_paciente.tipidentificacion as tipidentificacion ,
+                tecno_paciente.identificacion as identificacion ,
+                tecno_paciente.edad as edad ,
+                tecno_paciente.edad_en as edad_en ,
+                tecno_paciente.genero as genero ,
+                tecno_paciente.diagnostico_paciente as diagnostico_paciente,
+                tecno_paciente.institucion_reportente as institucion_reportente ,
+                tecno_paciente.naturaleza as naturaleza ,
+                tecno_paciente.direccion_reportante as direccion_reportante ,
+                municipios_a.descripcion as descripcion3,
+                departamentos_a.descripcion as descripcion4,
+                tecno_paciente.telefono_reportante as telefono_reportante ,
+                tecno_paciente.email_reportante as email_reportante ,
+                tecno_paciente.contacto_reportante as contacto_reportante ,
+                tecno_paciente.institucion_incidente as institucion_incidente ,
+                tecno_paciente.identificacion1       as identificacion1       ,
+                departamentos_b.descripcion as descripcion5 ,
+                municipios_b.descripcion as descripcion6,
+                tecno_paciente.nivel_complejidad as nivel_complejidad ,
+                tecno_cargos.descripcion as descripcion7 ,
+                tecno_paciente.fecha_notif as fecha_notif ,
+                tecno_paciente.autorizacion as autorizacion ,
+                (select dbo.tecno_tiporeportante.nombre_tiporeportante from dbo.tecno_tiporeportante where dbo.tecno_tiporeportante.cdg_tiporeportante = tecno_paciente.tipo_reportante) as tipo_reportante ,
+                tecno_causa_probable.termino_ea as termino_ea ,
+                tecno_evaluacion_caso.acciones as acciones ,
+                tecno_evaluacion_caso.exp_alertas as exp_alertas ,
+                tecno_evaluacion_caso.descripcion_alerta as descripcion_alerta ,
+                (CASE tecno_evaluacion_caso.estado_caso WHEN 'A' THEN 'ABIERTO' WHEN 'C' THEN 'CERRADO' ELSE 'SEGUIMIENTO' END) as estado_caso ,
+                tecno_reporte_alertas.numero as numero ,
+                tecno_reporte_alertas.risarh as risarh ,
+                tecno_reporte_alertas.descripcion_alerta as descripcion_alerta2,
+                tecno_reporte_alertas.expediente_dm as expediente_dm ,
+                tecno_tipoalertas.descripcion as descripcion8 ,
+                tecno_evaluacion_caso.seguimiento as seguimiento ,
+                (CASE tecno_evaluacion_caso.medida_ejecutada WHEN 1 THEN 'Oficio de requerimiento' WHEN 2 THEN 'Visita IVC al Prestador de Servicio de Salud' WHEN 3 THEN 'Visita IVC al fabricante/importador' WHEN 4 THEN 'Visita IVC al distribuidor/comercializador' WHEN 5 THEN 'Actividades de IVC de la SDS con el INVIMA' WHEN 6 THEN 'Asistencia Técnica al fabricante/importador' WHEN 7 THEN 'Asistencia Técnica al Prestador de Servicio de Salud' WHEN 8 THEN 'Otro' ELSE 'Ninguna acción' END) as medida_ejecutada ,
+                tecno_evaluacion_caso.notificacion as notificacion ,
+                tecno_evaluacion_caso.fecha_notificacion as fecha_notificacion ,
+                tecno_evaluacion_caso.fecha_importador as fecha_importador ,
+                tecno_evaluacion_caso.dispositivo_evaluacion as dispositivo_evaluacion ,
+                tecno_evaluacion_caso.enviado_importador as enviado_importador ,
+                tecno_evaluacion_caso.cdgfuncionario as nmbfuncionario,
+        	tecno_paciente.identificacion1 as identificacion_empresa,
+	(select dbo.tecno_roles.nombre_rol from dbo.tecno_roles where dbo.tecno_roles.IDROL = tecno_reporte_eventos.idrol) as IDROL,
+                tecno_reporte_eventos.reportepre as PRECOL
+            FROM tecno_reporte_eventos LEFT OUTER JOIN tecno_desenlace ON   
+            tecno_reporte_eventos.cdg_desenlace = tecno_desenlace.cdg_desenlace   
+            LEFT OUTER JOIN tecno_dispositivo ON tecno_reporte_eventos.reporte = tecno_dispositivo.reporte   
+            LEFT OUTER JOIN tecno_tipodispositivo ON tecno_dispositivo.cdg_tipodispositivo = tecno_tipodispositivo.cdg_tipodispositivo   
+            LEFT OUTER JOIN tecno_paciente ON tecno_reporte_eventos.reporte = tecno_paciente.reporte   
+            LEFT OUTER JOIN departamentos departamentos_a ON tecno_paciente.cod_depart = departamentos_a.cod_depart   
+            LEFT OUTER JOIN municipios municipios_a ON tecno_paciente.cod_mun = municipios_a.cod_mun   
+            LEFT OUTER JOIN municipios municipios_b ON tecno_paciente.cod_mun1 = municipios_b.cod_mun   
+            LEFT OUTER JOIN departamentos departamentos_b ON tecno_paciente.cod_depart1 = departamentos_b.cod_depart   
+            LEFT OUTER JOIN tecno_cargos ON tecno_paciente.cargo_inst = tecno_cargos.cdg_cargos   
+            LEFT OUTER JOIN tecno_evaluacion_caso ON tecno_reporte_eventos.reporte = tecno_evaluacion_caso.reporte   
+            LEFT OUTER JOIN tecno_causa_probable ON tecno_evaluacion_caso.cdg_causa = tecno_causa_probable.cdg_causa   
+            LEFT OUTER JOIN tecno_reporte_alertas ON tecno_reporte_eventos.reporte = tecno_reporte_alertas.reporte   
+            LEFT OUTER JOIN tecno_tipoalertas ON tecno_reporte_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas   
+            LEFT OUTER JOIN funcionarios ON tecno_evaluacion_caso.cdgfuncionario = funcionarios.cdgfuncionario       
+            WHERE 
+            (tecno_reporte_eventos.fechaingreso &gt;= ?1 AND tecno_reporte_eventos.fechaingreso &lt;= ?2)            
+            and (tecno_reporte_eventos.idips = ?3)
+            and tecno_paciente.cod_depart = ?4
+            and tecno_reporte_eventos.idrol = 3
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** --><!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="reporteRegistrosCargadosPORdept">
+        <query>
+            SELECT  
+                tecno_reporte_eventos.reporte  as reporte  ,
+                tecno_reporte_eventos.fechevento  as fechevento  ,
+                tecno_reporte_eventos.descripcion_evento as descripcion_evento ,
+                (CASE tecno_reporte_eventos.cdg_eventodeteccion WHEN 1 THEN 'Antes del Uso del DM' WHEN 2 THEN 'Durante el Uso del DM' ELSE 'Después del Uso del DM' END) AS cdg_eventodeteccion ,
+                (CASE tecno_reporte_eventos.cdg_tiporeporte WHEN 1 THEN 'Inmediato' ELSE 'Trimestral' END) as cdg_tiporeporte ,
+                tecno_reporte_eventos.fechreporte_evento as fechreporte_evento ,
+                (CASE tecno_reporte_eventos.cdg_origenreporte WHEN 1 THEN 'Vigilancia Pasiva' WHEN 2 THEN 'Vigilancia Proactiva' ELSE 'Vigilancia Activa' END) as cdg_origenreporte ,
+                (CASE tecno_reporte_eventos.cdg_tipoeventoincidente WHEN 1 THEN 'Evento adverso serio' WHEN 2 THEN 'Evento adverso no serio' WHEN 3 THEN 'Incidente adverso serio' ELSE 'Incidente adverso no serio' END) AS cdg_tipoeventoincidente ,
+                tecno_reporte_eventos.internet as internet ,
+                tecno_reporte_eventos.fechaingreso as fechaingreso ,
+                tecno_reporte_eventos.reportado as reportado,
+                tecno_reporte_eventos.desenlace_otro as desenlace_otro ,
+                tecno_desenlace.descripcion as descripcion ,
+                tecno_dispositivo.expediente as expediente ,
+                tecno_dispositivo.nroregsan as nroregsan ,
+                tecno_dispositivo.nombre_dispositivo as nombre_dispositivo ,
+                tecno_dispositivo.nombre_comercial as nombre_comercial ,
+                tecno_dispositivo.lote as lote ,
+                tecno_dispositivo.referencia as referencia ,
+                tecno_dispositivo.modelo as modelo ,
+                tecno_dispositivo.serial as serial ,
+                tecno_dispositivo.cdg_unicodispositivo as cdg_unicodispositivo ,
+                tecno_dispositivo.fabricante_usuario as fabricante_usuario ,
+                tecno_dispositivo.distribuidor_usuario as distribuidor_usuario ,
+                tecno_dispositivo.utilizado as utilizado ,
+                tecno_dispositivo.area_funciona as area_funciona ,
+                tecno_tipodispositivo.descripcion as descripcion2,
+                tecno_paciente.tipidentificacion as tipidentificacion ,
+                tecno_paciente.identificacion as identificacion ,
+                tecno_paciente.edad as edad ,
+                tecno_paciente.edad_en as edad_en ,
+                tecno_paciente.genero as genero ,
+                tecno_paciente.diagnostico_paciente as diagnostico_paciente,
+                tecno_paciente.institucion_reportente as institucion_reportente ,
+                tecno_paciente.naturaleza as naturaleza ,
+                tecno_paciente.direccion_reportante as direccion_reportante ,
+                municipios_a.descripcion as descripcion3,
+                departamentos_a.descripcion as descripcion4,
+                tecno_paciente.telefono_reportante as telefono_reportante ,
+                tecno_paciente.email_reportante as email_reportante ,
+                tecno_paciente.contacto_reportante as contacto_reportante ,
+                tecno_paciente.institucion_incidente as institucion_incidente ,
+                tecno_paciente.identificacion1       as identificacion1       ,
+                departamentos_b.descripcion as descripcion5 ,
+                municipios_b.descripcion as descripcion6,
+                tecno_paciente.nivel_complejidad as nivel_complejidad ,
+                tecno_cargos.descripcion as descripcion7 ,
+                tecno_paciente.fecha_notif as fecha_notif ,
+                tecno_paciente.autorizacion as autorizacion ,
+                (select dbo.tecno_tiporeportante.nombre_tiporeportante from dbo.tecno_tiporeportante where dbo.tecno_tiporeportante.cdg_tiporeportante = tecno_paciente.tipo_reportante) as tipo_reportante ,
+                tecno_causa_probable.termino_ea as termino_ea ,
+                tecno_evaluacion_caso.acciones as acciones ,
+                tecno_evaluacion_caso.exp_alertas as exp_alertas ,
+                tecno_evaluacion_caso.descripcion_alerta as descripcion_alerta ,
+                (CASE tecno_evaluacion_caso.estado_caso WHEN 'A' THEN 'ABIERTO' WHEN 'C' THEN 'CERRADO' ELSE 'SEGUIMIENTO' END) as estado_caso ,
+                tecno_reporte_alertas.numero as numero ,
+                tecno_reporte_alertas.risarh as risarh ,
+                tecno_reporte_alertas.descripcion_alerta as descripcion_alerta2,
+                tecno_reporte_alertas.expediente_dm as expediente_dm ,
+                tecno_tipoalertas.descripcion as descripcion8 ,
+                tecno_evaluacion_caso.seguimiento as seguimiento ,
+                (CASE tecno_evaluacion_caso.medida_ejecutada WHEN 1 THEN 'Oficio de requerimiento' WHEN 2 THEN 'Visita IVC al Prestador de Servicio de Salud' WHEN 3 THEN 'Visita IVC al fabricante/importador' WHEN 4 THEN 'Visita IVC al distribuidor/comercializador' WHEN 5 THEN 'Actividades de IVC de la SDS con el INVIMA' WHEN 6 THEN 'Asistencia Técnica al fabricante/importador' WHEN 7 THEN 'Asistencia Técnica al Prestador de Servicio de Salud' WHEN 8 THEN 'Otro' ELSE 'Ninguna acción' END) as medida_ejecutada ,
+                tecno_evaluacion_caso.notificacion as notificacion ,
+                tecno_evaluacion_caso.fecha_notificacion as fecha_notificacion ,
+                tecno_evaluacion_caso.fecha_importador as fecha_importador ,
+                tecno_evaluacion_caso.dispositivo_evaluacion as dispositivo_evaluacion ,
+                tecno_evaluacion_caso.enviado_importador as enviado_importador ,
+                tecno_evaluacion_caso.cdgfuncionario as nmbfuncionario,
+        	tecno_paciente.identificacion1 as identificacion_empresa,
+	(select dbo.tecno_roles.nombre_rol from dbo.tecno_roles where dbo.tecno_roles.IDROL = tecno_reporte_eventos.idrol) as IDROL,
+                tecno_reporte_eventos.reportepre as PRECOL
+            FROM tecno_reporte_eventos LEFT OUTER JOIN tecno_desenlace ON   
+            tecno_reporte_eventos.cdg_desenlace = tecno_desenlace.cdg_desenlace   
+            LEFT OUTER JOIN tecno_dispositivo ON tecno_reporte_eventos.reporte = tecno_dispositivo.reporte   
+            LEFT OUTER JOIN tecno_tipodispositivo ON tecno_dispositivo.cdg_tipodispositivo = tecno_tipodispositivo.cdg_tipodispositivo   
+            LEFT OUTER JOIN tecno_paciente ON tecno_reporte_eventos.reporte = tecno_paciente.reporte   
+            LEFT OUTER JOIN departamentos departamentos_a ON tecno_paciente.cod_depart = departamentos_a.cod_depart   
+            LEFT OUTER JOIN municipios municipios_a ON tecno_paciente.cod_mun = municipios_a.cod_mun   
+            LEFT OUTER JOIN municipios municipios_b ON tecno_paciente.cod_mun1 = municipios_b.cod_mun   
+            LEFT OUTER JOIN departamentos departamentos_b ON tecno_paciente.cod_depart1 = departamentos_b.cod_depart   
+            LEFT OUTER JOIN tecno_cargos ON tecno_paciente.cargo_inst = tecno_cargos.cdg_cargos   
+            LEFT OUTER JOIN tecno_evaluacion_caso ON tecno_reporte_eventos.reporte = tecno_evaluacion_caso.reporte   
+            LEFT OUTER JOIN tecno_causa_probable ON tecno_evaluacion_caso.cdg_causa = tecno_causa_probable.cdg_causa   
+            LEFT OUTER JOIN tecno_reporte_alertas ON tecno_reporte_eventos.reporte = tecno_reporte_alertas.reporte   
+            LEFT OUTER JOIN tecno_tipoalertas ON tecno_reporte_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas   
+            LEFT OUTER JOIN funcionarios ON tecno_evaluacion_caso.cdgfuncionario = funcionarios.cdgfuncionario       
+            WHERE 
+            (tecno_reporte_eventos.fechaingreso &gt;= ?1 AND tecno_reporte_eventos.fechaingreso &lt;= ?2)
+            and (tecno_reporte_eventos.idips in (select distinct identificacion_empresa from dbo.tecno_usuarios_internet tui, dbo.tecno_reporte_eventos datos where (datos.idips = CONVERT(varchar(30), tui.identificacion_empresa) ) and tui.cod_depart = ?3 and tui.ID_Rol_Usuario =  3))
+            and tecno_paciente.cod_depart = ?3
+            and tecno_reporte_eventos.idrol = 3
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Dispositivos de Expedientes -->
+    <named-native-query name="reporteDispositivosExpedientes">
+        <query>
+        SELECT 
+         dbo.tecno_reporte_eventos.reporte as reporte,   
+         dbo.tecno_reporte_eventos.fechaingreso as fechaingreso,   
+         dbo.tecno_dispositivo.expediente as expediente,   
+         dbo.tecno_dispositivo.nroregsan as nroregsan,   
+         dbo.tecno_dispositivo.nombre_dispositivo as nombre_dispositivo,   
+         dbo.tecno_dispositivo.nombre_comercial as nombre_comercial,   
+         dbo.tecno_dispositivo.lote as lote,   
+         dbo.tecno_dispositivo.referencia as referencia,   
+         dbo.tecno_dispositivo.modelo as modelo,   
+         dbo.tecno_dispositivo.serial as serial,   
+         dbo.tecno_dispositivo.cdg_unicodispositivo as cdg_unicodispositivo,   
+         dbo.tecno_dispositivo.fabricante_usuario as fabricante_usuario,   
+         dbo.tecno_dispositivo.distribuidor_usuario as distribuidor_usuario,   
+         dbo.tecno_dispositivo.utilizado as utilizado,   
+         dbo.tecno_dispositivo.area_funciona as area_funciona,   
+         dbo.tecno_tipodispositivo.descripcion as descripcion,   
+         dbo.tecno_datos_expedientes.nroexpediente as nroexpediente,   
+         dbo.tecno_datos_expedientes.nombre_producto as nombre_producto,   
+         dbo.tecno_datos_expedientes.nroregsan as nroregsan1,   
+         dbo.tecno_datos_expedientes.riesgo as riesgo,   
+         dbo.tecno_datos_expedientes.miembroscomprometidos as miembroscomprometidos,   
+         dbo.tecno_datos_expedientes.clasificacion as clasificacion,   
+         dbo.tecno_datos_expedientes.nivel_riesgo as nivel_riesgo,   
+         dbo.tecno_datos_expedientes.observacion as observacion,   
+         dbo.tecno_datos_expedientes.referencias as referencias,   
+         dbo.tecno_datos_expedientes.sistemas as sistemas,   
+         dbo.tecno_datos_expedientes.modelo_autorizado as modelo_autorizado,   
+         dbo.tecno_datos_expedientes.tipo_dispositivo as tipo_dispositivo,   
+         dbo.tecno_datos_expedientes.fabricante as fabricante,   
+         dbo.tecno_datos_expedientes.importador as importador,   
+         dbo.tecno_datos_expedientes.marca as marca,   
+         dbo.tecno_datos_expedientes.titular as titular,   
+         dbo.tecno_datos_expedientes.uso as uso,   
+         dbo.tecno_roles_reporte.nroexpediente as nroexpediente1,   
+         dbo.tecno_roles_reporte.cdgrol1 as cdgrol1,   
+         dbo.tecno_roles_reporte.nombre1 as nombre1,   
+         dbo.tecno_roles_reporte.pais1 as pais1,   
+         dbo.tecno_roles_reporte.ciudad1 as ciudad1,   
+         dbo.tecno_roles_reporte.direccion1 as direccion1,   
+         dbo.tecno_roles_reporte.cdgrol2 as cdgrol2,   
+         dbo.tecno_roles_reporte.nombre2 as nombre2,   
+         dbo.tecno_roles_reporte.pais2 as pais2,   
+         dbo.tecno_roles_reporte.ciudad2 as ciudad2,   
+         dbo.tecno_roles_reporte.direccion2 as direccion2,   
+         dbo.tecno_roles_reporte.numero as numero  
+        FROM dbo.tecno_reporte_eventos LEFT OUTER JOIN dbo.tecno_dispositivo ON dbo.tecno_reporte_eventos.reporte = dbo.tecno_dispositivo.reporte 
+        LEFT OUTER JOIN dbo.tecno_tipodispositivo ON dbo.tecno_dispositivo.cdg_tipodispositivo = dbo.tecno_tipodispositivo.cdg_tipodispositivo 
+        LEFT OUTER JOIN dbo.tecno_datos_expedientes ON dbo.tecno_dispositivo.reporte = dbo.tecno_datos_expedientes.reporte LEFT OUTER JOIN 
+        dbo.tecno_roles_reporte ON dbo.tecno_datos_expedientes.reporte = dbo.tecno_roles_reporte.reporte  
+        WHERE (dbo.tecno_reporte_eventos.fechaingreso &gt;= ?1 AND dbo.tecno_reporte_eventos.fechaingreso &lt;= ?2)
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Inscripción de Red-->
+    <named-native-query name="reporteInscripcionRed">
+        <query>
+        SELECT  
+            tecno_red.id as id,
+            tecno_red.fecha_solicitud as fecha_solicitud, 
+            tecno_red.nit as nit, 
+            tecno_red.nombre_institucion as nombre_institucion, 
+            tecno_red.direccion_organizacion as direccion_organizacion, 
+            tecno_modalidad.descripcion as descripcion,  
+            paises_a.pais as pais,
+            departamentos_a.descripcion as descripcion1,
+            municipios_a.descripcion as descripcion2,
+            tecno_red.caracter as caracter, 
+            tecno_red.complejidad as complejidad,
+            tecno_red.email_corporativo as email_corporativo,
+            tecno_red.telefono_organiz as telefono_organiz,
+            tecno_red.fax_organiz as fax_organiz,
+            tecno_red.area_empresa as area_empresa,
+            tecno_red.cargos as cargos, 
+            tecno_red.nombre_solic as nombre_solic,
+            tecno_red.direccion_solicitante as direccion_solicitante,
+            tecno_profesion.descripcion as descripcion3, 
+            tecno_red.cedula_solicitante as cedula_solicitante, 
+            paises_b.pais as pais2,
+            departamentos_b.descripcion as descripcion4,
+            municipios_b.descripcion as descripcion5, 
+            tecno_red.telefono_solic as telefono_solic, 
+            tecno_red.celular_solic as celular_solic, 
+            tecno_red.email_personal as email_personal, 
+            funcionarios.nmbfuncionario as nmbfuncionario 
+         FROM tecno_red LEFT OUTER JOIN tecno_modalidad ON tecno_red.cdg_modalidad = tecno_modalidad.cdg_modalidad LEFT OUTER JOIN tecno_profesion ON tecno_red.cdg_profesion = tecno_profesion.cdg_profesion LEFT OUTER JOIN funcionarios ON tecno_red.cdg_funcionario = funcionarios.cdgfuncionario LEFT OUTER JOIN paises paises_a ON tecno_red.pais_organiz = paises_a.cdg_pais LEFT OUTER JOIN municipios municipios_a ON tecno_red.cod_mun1 = municipios_a.cod_mun LEFT OUTER JOIN departamentos departamentos_a ON tecno_red.cod_depart1 = departamentos_a.cod_depart LEFT OUTER JOIN municipios municipios_b ON tecno_red.cod_mun = municipios_b.cod_mun LEFT OUTER JOIN departamentos departamentos_b ON tecno_red.cod_depart = departamentos_b.cod_depart LEFT OUTER JOIN paises paises_b ON tecno_red.pais_solic = paises_b.pais    
+         WHERE 
+         (tecno_red.fecha_solicitud &gt;= ?1 and tecno_red.fecha_solicitud &lt;= ?2)
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Monitoreo -->
+    <named-native-query name="reporteMonitoreo">
+       <query>
+        SELECT  
+           tecno_monitoreo.risarh as risarh,           
+           tecno_monitoreo.fecha_ingreso as fecha_ingreso,           
+           tecno_tipoalertas.descripcion as descripcion,           
+           tecno_monitoreo.fuente as fuente,           
+           tecno_monitoreo.detalles as detalles,           
+           tecno_monitoreo.aplica as aplica,           
+           ISNULL((SELECT TOP 1 x.nombre_persona FROM tecno_usuarios_internet x where x.identificacion_persona=tecno_monitoreo.funcionario_monitoreo), funcionarios.nmbfuncionario) as nmbfuncionario,           
+           tecno_monitoreo.pagina_web as pagina_web,           
+           tecno_monitoreo.internet as internet  
+           FROM 
+           tecno_monitoreo LEFT OUTER JOIN funcionarios ON tecno_monitoreo.funcionario_monitoreo = funcionarios.cdgfuncionario
+           JOIN tecno_exp_alertas ON tecno_monitoreo.risarh = tecno_exp_alertas.risarh,
+           tecno_tipoalertas WHERE ( tecno_monitoreo.tipo = tecno_tipoalertas.cdg_tipoalertas) and 
+           (tecno_exp_alertas.fecha_ingreso &gt;= ?1 and tecno_exp_alertas.fecha_ingreso &lt;= ?2) 
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Alertas -->
+    <named-native-query name="reporteAlertas">
+       <query>
+        SELECT  
+                tecno_exp_alertas.risarh as risarh,
+                tecno_exp_alertas.fecha_radicado as fecha_radicado,
+                tecno_tipoalertas.descripcion as descripcion,
+                tecno_exp_alertas.expediente_dm as expediente_dm,
+                tecno_exp_alertas.nroregsan as nroregsan,
+                tecno_exp_alertas.fecha_ingreso as fecha_ingreso,
+                tecno_exp_alertas.nombre_dm as nombre_dm,
+                tecno_exp_alertas.marca as marca,
+                tecno_exp_alertas.modelo as modelo,
+                tecno_exp_alertas.cdg_priorizacion as cdg_priorizacion,
+                tecno_exp_alertas.estado as estado,
+                tecno_exp_alertas.causas as causas,
+                tecno_exp_alertas.medidas_tomadas as medidas_tomadas,
+                tecno_exp_alertas.lote as lote,
+                tecno_exp_alertas.tipodisposivito as tipodisposivito,
+                tecno_exp_alertas.serial as serial,
+                departamentos_a.descripcion as descripcion2,
+                paises.pais as pais,
+                municipios_a.descripcion as descripcion3,
+                tecno_exp_alertas.descripcion as descripcion4,
+                tecno_exp_alertas.seguimiento as seguimiento,
+                tecno_exp_alertas.consecutivo_reporte as consecutivo_reporte,
+                tecno_exp_alertas.razon_social_notificante as razon_social_notificante,
+                tecno_exp_alertas.nit as nit,
+                tecno_exp_alertas.direccion as direccion,
+                tecno_exp_alertas.telefono as telefono,
+                tecno_profesion.descripcion as descripcion5,
+                tecno_exp_alertas.email as email,
+                tecno_exp_alertas.estado_dm as estado_dm,
+                tecno_exp_alertas.reporte_eventos as reporte_eventos,
+                tecno_exp_alertas.cuantos_eventos as cuantos_eventos,
+                tecno_exp_alertas.descripcion_evento as descripcion_evento,
+                tecno_gravedad.descripcion as descripcion6,
+                tecno_frecuencias.descripcion as descripcion7,
+                tecno_areas.descripcion as descripcion8,
+                departamentos_b.descripcion as descripcion9,
+                municipios_b.descripcion as descripcion10,
+                tecno_exp_alertas.fecha_hurto as fecha_hurto,
+                tecno_exp_alertas.fiscalia as fiscalia,
+                tecno_exp_alertas.autorizacion as autorizacion,
+                tecno_exp_alertas.descripcion_hurto as descripcion_hurto,
+                tecno_exp_alertas.medidas_invima as medidas_invima,
+                tecno_exp_alertas.nombre_notificante as nombre_notificante,
+                tecno_exp_alertas.valor_prioriza as valor_prioriza,
+                tecno_exp_alertas.nombre_agencia as nombre_agencia,
+                tecno_exp_alertas.internet as internet,
+                tecno_exp_alertas.otro_estadodm as otro_estadodm,
+                tecno_exp_alertas.cdg_riesgo   as cdg_riesgo,
+                tecno_exp_alertas.nit as nit_reportante,
+                tecno_monitoreo.aplica as aplica
+           FROM 
+           tecno_exp_alertas LEFT OUTER JOIN tecno_gravedad ON tecno_exp_alertas.cdg_gravedad = tecno_gravedad.cdg_gravedad LEFT OUTER JOIN tecno_frecuencias ON tecno_exp_alertas.cdg_frecuencia = tecno_frecuencias.cdg_frecuencias LEFT OUTER JOIN tecno_areas ON tecno_exp_alertas.cdg_areas = tecno_areas.cdg_areas LEFT OUTER JOIN municipios municipios_a ON tecno_exp_alertas.cod_mun = municipios_a.cod_mun LEFT OUTER JOIN departamentos departamentos_a ON tecno_exp_alertas.cod_depart = departamentos_a.cod_depart LEFT OUTER JOIN paises ON tecno_exp_alertas.pais = paises.cdg_pais LEFT OUTER JOIN tecno_profesion 
+           ON tecno_exp_alertas.cdg_profesion = tecno_profesion.cdg_profesion LEFT OUTER JOIN departamentos departamentos_b ON tecno_exp_alertas.cod_depart1 = departamentos_b.cod_depart LEFT OUTER JOIN municipios municipios_b ON tecno_exp_alertas.cod_mun1 = municipios_b.cod_mun LEFT OUTER JOIN 
+           tecno_tipoalertas ON tecno_exp_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas LEFT OUTER JOIN tecno_monitoreo ON tecno_exp_alertas.risarh = tecno_monitoreo.risarh    
+           WHERE 
+           (tecno_exp_alertas.fecha_ingreso &gt;= ?1 AND tecno_exp_alertas.fecha_ingreso &lt;=  ?2)
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="reporteAlertasIPS">
+       <query>
+        SELECT  
+                tecno_exp_alertas.risarh as risarh,
+                tecno_exp_alertas.fecha_radicado as fecha_radicado,
+                tecno_tipoalertas.descripcion as descripcion,
+                tecno_exp_alertas.expediente_dm as expediente_dm,
+                tecno_exp_alertas.nroregsan as nroregsan,
+                tecno_exp_alertas.fecha_ingreso as fecha_ingreso,
+                tecno_exp_alertas.nombre_dm as nombre_dm,
+                tecno_exp_alertas.marca as marca,
+                tecno_exp_alertas.modelo as modelo,
+                tecno_exp_alertas.cdg_priorizacion as cdg_priorizacion,
+                tecno_exp_alertas.estado as estado,
+                tecno_exp_alertas.causas as causas,
+                tecno_exp_alertas.medidas_tomadas as medidas_tomadas,
+                tecno_exp_alertas.lote as lote,
+                tecno_exp_alertas.tipodisposivito as tipodisposivito,
+                tecno_exp_alertas.serial as serial,
+                departamentos_a.descripcion as descripcion2,
+                paises.pais as pais,
+                municipios_a.descripcion as descripcion3,
+                tecno_exp_alertas.descripcion as descripcion4,
+                tecno_exp_alertas.seguimiento as seguimiento,
+                tecno_exp_alertas.consecutivo_reporte as consecutivo_reporte,
+                tecno_exp_alertas.razon_social_notificante as razon_social_notificante,
+                tecno_exp_alertas.nit as nit,
+                tecno_exp_alertas.direccion as direccion,
+                tecno_exp_alertas.telefono as telefono,
+                tecno_profesion.descripcion as descripcion5,
+                tecno_exp_alertas.email as email,
+                tecno_exp_alertas.estado_dm as estado_dm,
+                tecno_exp_alertas.reporte_eventos as reporte_eventos,
+                tecno_exp_alertas.cuantos_eventos as cuantos_eventos,
+                tecno_exp_alertas.descripcion_evento as descripcion_evento,
+                tecno_gravedad.descripcion as descripcion6,
+                tecno_frecuencias.descripcion as descripcion7,
+                tecno_areas.descripcion as descripcion8,
+                departamentos_b.descripcion as descripcion9,
+                municipios_b.descripcion as descripcion10,
+                tecno_exp_alertas.fecha_hurto as fecha_hurto,
+                tecno_exp_alertas.fiscalia as fiscalia,
+                tecno_exp_alertas.autorizacion as autorizacion,
+                tecno_exp_alertas.descripcion_hurto as descripcion_hurto,
+                tecno_exp_alertas.medidas_invima as medidas_invima,
+                tecno_exp_alertas.nombre_notificante as nombre_notificante,
+                tecno_exp_alertas.valor_prioriza as valor_prioriza,
+                tecno_exp_alertas.nombre_agencia as nombre_agencia,
+                tecno_exp_alertas.internet as internet,
+                tecno_exp_alertas.otro_estadodm as otro_estadodm,
+                tecno_exp_alertas.cdg_riesgo   as cdg_riesgo,
+                tecno_exp_alertas.nit as nit_reportante,
+                tecno_monitoreo.aplica as aplica            
+           FROM 
+           tecno_exp_alertas LEFT OUTER JOIN tecno_gravedad ON tecno_exp_alertas.cdg_gravedad = tecno_gravedad.cdg_gravedad LEFT OUTER JOIN tecno_frecuencias ON tecno_exp_alertas.cdg_frecuencia = tecno_frecuencias.cdg_frecuencias LEFT OUTER JOIN tecno_areas ON tecno_exp_alertas.cdg_areas = tecno_areas.cdg_areas LEFT OUTER JOIN municipios municipios_a ON tecno_exp_alertas.cod_mun = municipios_a.cod_mun LEFT OUTER JOIN departamentos departamentos_a ON tecno_exp_alertas.cod_depart = departamentos_a.cod_depart LEFT OUTER JOIN paises ON tecno_exp_alertas.pais = paises.cdg_pais LEFT OUTER JOIN tecno_profesion 
+           ON tecno_exp_alertas.cdg_profesion = tecno_profesion.cdg_profesion LEFT OUTER JOIN departamentos departamentos_b ON tecno_exp_alertas.cod_depart1 = departamentos_b.cod_depart LEFT OUTER JOIN municipios municipios_b ON tecno_exp_alertas.cod_mun1 = municipios_b.cod_mun LEFT OUTER JOIN 
+           tecno_tipoalertas ON tecno_exp_alertas.cdg_tipoalerta = tecno_tipoalertas.cdg_tipoalertas LEFT OUTER JOIN tecno_monitoreo ON tecno_exp_alertas.risarh = tecno_monitoreo.risarh     
+           WHERE 
+           (tecno_exp_alertas.fecha_ingreso &gt;= ?1 AND tecno_exp_alertas.fecha_ingreso &lt;=  ?2) 
+           and (tecno_exp_alertas.nit = ?3)
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Consecutivos -->
+    <named-native-query name="reporteConsecutivos">
+        <query>
+            SELECT  
+            tecno_consecutivo.id as id,           
+            tecno_consecutivo.consecutivo as consecutivo,           
+            tecno_consecutivo.reporte as reporte,           
+            tecno_consecutivo.nombre_solic as nombre_solic,           
+            tecno_consecutivo.apellidos_solic as apellidos_solic,           
+            tecno_consecutivo.cargo as cargo,           
+            tecno_consecutivo.radicado as radicado,          
+            tecno_consecutivo.fecha_radicado as fecha_radicado,           
+            tecno_consecutivo.entidad as entidad,           
+            tecno_consecutivo.direccion as direccion,           
+            tecno_consecutivo.respetado as respetado,           
+            tecno_consecutivo.apelativo as apelativo,           
+            tecno_consecutivo.proyecto as proyecto,           
+            tecno_consecutivo.fecha_ingreso as fecha_ingreso,           
+            departamentos.descripcion as descripcion,           
+            municipios.descripcion as descripcion2  
+            FROM tecno_consecutivo 
+            LEFT OUTER JOIN departamentos ON tecno_consecutivo.cod_depart = departamentos.cod_depart LEFT OUTER JOIN municipios ON 
+            tecno_consecutivo.cod_mun = municipios.cod_mun     
+            WHERE (tecno_consecutivo.fecha_ingreso &gt;= ?1 AND tecno_consecutivo.fecha_ingreso &lt;= = ?2)
+        </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Usuarios -->
+    <named-native-query name="reporteUsuarios">
+        <query>
+            SELECT  
+            tecno_usuarios.reporte as reporte,           
+            tecno_usuarios.fecha_notificacion as fecha_notificacion,           
+            tecno_usuarios.nombre_dm as nombre_dm,           
+            tecno_usuarios.nombre_comercial as nombre_comercial,           
+            tecno_usuarios.nroregsan as nroregsan,           
+            tecno_usuarios.lote as lote,           
+            tecno_usuarios.referencia as referencia,           
+            tecno_usuarios.nombre_fabricante as nombre_fabricante,           
+            tecno_usuarios.nombre_distrib_import as nombre_distrib_import,           
+            tecno_usuarios.fecha_evento as fecha_evento,           
+            tecno_usuarios.descripcion_evento as descripcion_evento,           
+            tecno_usuarios.nombre_reportante as nombre_reportante,           
+            tecno_usuarios.direccion_reportante as direccion_reportante,           
+            tecno_usuarios.telefono as telefono,           
+            tecno_usuarios.sexo as sexo,           
+            tecno_usuarios.edad as edad,           
+            tecno_usuarios.edad_en as edad_en,           
+            tecno_usuarios.email as email,           
+            paises.pais as pais,           
+            departamentos.descripcion as descripcion,           
+            municipios.descripcion as descripcion2,           
+            tecno_usuarios.cdg_eventodeteccion as cdg_eventodeteccion,           
+            tecno_usuarios.consecutivo as consecutivo,           
+            funcionarios.nmbfuncionario as nmbfuncionario,           
+            tecno_usuarios.revisado as revisado  
+            FROM 
+            tecno_usuarios LEFT OUTER JOIN paises ON tecno_usuarios.pais = paises.cdg_pais LEFT OUTER JOIN departamentos ON 
+            tecno_usuarios.cod_depart = departamentos.cod_depart LEFT OUTER JOIN municipios ON tecno_usuarios.cod_mun = municipios.cod_mun 
+            LEFT OUTER JOIN funcionarios ON tecno_usuarios.cdgfuncionario = funcionarios.cdgfuncionario     
+            WHERE (tecno_usuarios.fecha_notificacion &gt;= ?1 AND tecno_usuarios.fecha_notificacion &lt;=  ?2)            
+        </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- Reporte de Usuarios de Internet -->
+    <named-native-query name="reporteUsuariosInternet">
+        <query>
+            SELECT  
+                    tecno_usuarios_internet.identificacion_empresa as identificacion_empresa,
+                    tecno_usuarios_internet.tipidentificacion_empresa as tipidentificacion_empresa,
+                    tecno_usuarios_internet.nombre_empresa as nombre_empresa,
+                    tecno_usuarios_internet.direccion_empresa as direccion_empresa,
+                    tecno_usuarios_internet.cdg_pais as cdg_pais,
+                    (select departamentos.descripcion from departamentos where departamentos.cod_depart=tecno_usuarios_internet.cod_depart) as cod_depart,
+                    (select municipios.descripcion from municipios where municipios.cod_mun=tecno_usuarios_internet.cod_mun) as cod_mun,
+                    tecno_usuarios_internet.telefono_empresa as telefono_empresa,
+                    tecno_usuarios_internet.email_empresa as email_empresa,
+                    tecno_usuarios_internet.fax as fax,
+                    tecno_usuarios_internet.url as url,
+                    tecno_usuarios_internet.identificacion_persona as identificacion_persona,
+                    tecno_usuarios_internet.tipidentificacion_persona as tipidentificacion_persona,
+                    tecno_usuarios_internet.nombre_persona as nombre_persona,
+                    tecno_usuarios_internet.cargo_persona as cargo_persona,
+                    tecno_usuarios_internet.telefono_persona as telefono_persona,
+                    tecno_usuarios_internet.email_persona as email_persona,
+                    tecno_usuarios_internet.usuario as usuario,
+                    tecno_usuarios_internet.activo as activo,
+                    tecno_usuarios_internet.ID_Rol_Usuario as ID_Rol_Usuario,
+                    tecno_usuarios_internet.pregunta as pregunta,
+                    tecno_usuarios_internet.respuesta as respuesta,
+                    tecno_usuarios_internet.fecha_ingreso as fecha_ingreso,
+                    tecno_usuarios_internet.password as password,
+                    tecno_usuarios_internet.session as session,
+                    tecno_usuarios_internet.estado_usuario as estado_usuario,
+                    tecno_usuarios_internet.clasificacion_usuario as clasificacion_usuario            
+            FROM 
+            tecno_usuarios_internet
+            WHERE (tecno_usuarios_internet.fecha_ingreso &gt;= ?1 AND tecno_usuarios_internet.fecha_ingreso &lt;=  ?2) 
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="consultaReportesEnCero">
+        <query>
+        SELECT distinct
+        datos.radicadocero as NUMERO_RADICADO,            
+        tui.nombre_empresa as RAZON_SOCIAL,
+        tui.identificacion_empresa as NIT_EMPRESA,
+        depto.descripcion as DEPARTAMENTO,
+        muni.descripcion as MUNICIPIO,
+        CASE datos.trimestre  WHEN '1' THEN 'Primer Trimestre (I)' 
+        WHEN '2' THEN 'Segundo Trimestre (II)' 
+        WHEN '3' THEN 'Tercer Trimestre (III)' 
+        WHEN '4' THEN 'Cuarto Trimestre (IV)' END 
+        as TRIMESTRE_REPORTADO,
+        datos.year_trimestre as YEAR_TRIMESTRE,
+        (select ru.nombre_rol from dbo.tecno_roles ru where ru.IDROL = tui.ID_Rol_Usuario) as TIPO_ACTOR,
+        upper(datos.notificacion) as NOTIFICACION,
+        datos.fecha_actualiza as FECHA_RADICADO,
+        datos.observacion as OBSERVACION_REPORTANTE,
+        muni.cod_mun as CODMUNICIPIO
+        FROM
+        dbo.tecno_usuarios_internet tui 
+          INNER JOIN
+          dbo.tecno_reportes_cero datos ON tui.usuario = datos.usuario_id
+          INNER JOIN
+          dbo.departamentos depto ON tui.cod_depart = depto.cod_depart
+          INNER JOIN
+          dbo.municipios muni ON (tui.cod_mun = muni.cod_mun and muni.cod_depart = depto.cod_depart)
+        where datos.fecha_actualiza &gt;= ?1 and datos.fecha_actualiza &lt;= ?2 
+        and datos.depto = ?3 and tui.ID_Rol_Usuario = 3
+        ORDER BY tui.nombre_empresa, datos.fecha_actualiza;
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <named-native-query name="consultaReportesEnCeroGeneral">
+        <query>
+        SELECT distinct
+        datos.radicadocero as NUMERO_RADICADO,            
+        tui.nombre_empresa as RAZON_SOCIAL,
+        tui.identificacion_empresa as NIT_EMPRESA,
+        depto.descripcion as DEPARTAMENTO,
+        muni.descripcion as MUNICIPIO,
+        CASE datos.trimestre  WHEN '1' THEN 'Primer Trimestre (I)' 
+        WHEN '2' THEN 'Segundo Trimestre (II)' 
+        WHEN '3' THEN 'Tercer Trimestre (III)' 
+        WHEN '4' THEN 'Cuarto Trimestre (IV)' END 
+        as TRIMESTRE_REPORTADO,
+        datos.year_trimestre as YEAR_TRIMESTRE,
+        (select ru.nombre_rol from dbo.tecno_roles ru where ru.IDROL = tui.ID_Rol_Usuario) as TIPO_ACTOR,
+        upper(datos.notificacion) as NOTIFICACION,
+        datos.fecha_actualiza as FECHA_RADICADO,
+        datos.observacion as OBSERVACION_REPORTANTE
+        FROM
+        dbo.tecno_usuarios_internet tui 
+          INNER JOIN
+          dbo.tecno_reportes_cero datos ON tui.usuario = datos.usuario_id
+          INNER JOIN
+          dbo.departamentos depto ON tui.cod_depart = depto.cod_depart
+          INNER JOIN
+          dbo.municipios muni ON (tui.cod_mun = muni.cod_mun and muni.cod_depart = depto.cod_depart)
+        where datos.fecha_actualiza &gt;= ?1 and datos.fecha_actualiza &lt;= ?2 
+        ORDER BY tui.nombre_empresa, datos.fecha_actualiza;
+       </query>
+    </named-native-query>
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+    <!-- ********************************************************************************** -->
+</entity-mappings>
